@@ -113,7 +113,7 @@ public class ClientSwing {
 
     class showTopicsHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            
+            //DONE
             Set<String> topics = topicManager.topics();
             StringBuilder sb = new StringBuilder();
             for (String topic:topics){
@@ -128,7 +128,7 @@ public class ClientSwing {
 
         
         public void actionPerformed(ActionEvent e) {
-            
+            //DONE
             if (!topicManager.isTopic(argument_TextField.getText())){
                 if (publisherTopic!=null){
                     topicManager.removePublisherFromTopic(publisherTopic);
@@ -152,7 +152,7 @@ public class ClientSwing {
     }
     class newSubscriberHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            
+            //DONE
             String data = argument_TextField.getText();
             
             if (topicManager.isTopic(data)){
@@ -174,7 +174,7 @@ public class ClientSwing {
     }
     class UnsubscribeHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            
+            //DONE
             String data = argument_TextField.getText();
             
             if (topicManager.isTopic(data)){
@@ -194,7 +194,7 @@ public class ClientSwing {
     }
     class postEventHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+            //DONE
             if (publisher!=null){
                 String event = argument_TextField.getText();
                 publisher.publish(publisherTopic, event);
@@ -207,7 +207,6 @@ public class ClientSwing {
     }
     class CloseAppHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            //...
             System.exit(0);
         }
     }

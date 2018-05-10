@@ -12,4 +12,9 @@ package util;
 public class MyEvent {
   public String topic;
   public String content;
+
+    public MyEvent(String topic, String event) {
+        this.topic = topic;
+        this.content = event;
+    }
 }

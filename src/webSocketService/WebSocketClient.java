@@ -4,6 +4,7 @@ import apiREST.Cons;
 import com.google.gson.Gson;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
@@ -33,15 +34,16 @@ public class WebSocketClient {
 
   //only one subscriber per topic allowed:
   public static synchronized void addSubscriber(String topic_name, Subscriber subscriber) {
-    
-    //...
+      //TODO CHECK
+    if (subscriber!=null)
+        subscriberMap.put(topic_name, subscriber);
     
   }
 
   public static synchronized void removeSubscriber(String topic_name) {
-    
-    //...
-    
+      //TODO CHECK
+    if(subscriberMap!=null && subscriberMap.containsKey(topic_name))
+            subscriberMap.remove(topic_name);
   }
 
   public static void close() {
@@ -62,13 +64,15 @@ public class WebSocketClient {
     //message to warn closing a topic:
     if (topic.equals("CLOSED")) {
       
-      //...
+      //TODO CHECK
+      subscriberMap.get(topic).onClose(topic, message);
       
     } 
     //ordinary message from topic:
     else {
       
-      //...
+      //TODO CHECK
+      subscriberMap.get(topic).onEvent(topic, message);
       
     }
   }
