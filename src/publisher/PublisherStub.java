@@ -8,6 +8,10 @@ public class PublisherStub implements Publisher {
 
   String topic;
 
+  public PublisherStub(){
+  
+  }
+  
   public PublisherStub(String topic) {
     this.topic = topic;
   }

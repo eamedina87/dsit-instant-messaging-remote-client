@@ -14,7 +14,10 @@ public class TopicManagerStub implements TopicManager {
   public String user;
     private Set<String> mTopics;
     
-
+  public TopicManagerStub(){
+  }
+    
+    
   public TopicManagerStub(String user) {
     WebSocketClient.newInstance();
     this.user = user;

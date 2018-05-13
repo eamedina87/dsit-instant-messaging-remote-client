@@ -18,6 +18,9 @@ public class SubscriberImpl implements Subscriber {
         private JTextArea my_subscriptions_TextArea;
         private Map<String,Subscriber> my_subscriptions;
 
+        public SubscriberImpl(){
+        }
+        
         public SubscriberImpl(ClientSwing clientSwing) {
                 this.messages_TextArea = clientSwing.messages_TextArea;
                 this.my_subscriptions_TextArea = clientSwing.my_subscriptions_TextArea;
