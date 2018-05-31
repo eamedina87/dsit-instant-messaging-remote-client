@@ -6,25 +6,31 @@ package subscriber;
 
 import java.util.Map;
 import javax.swing.JTextArea;
+
 import main.ClientSwing;
+import webSocketService.WebSocketClient;
+import webSocketService.WebSocketClientFinal;
+import webSocketService.WebSocketClientFinal.MessageHandler;
 
 /**
  *
  * @author juanluis
  */
-public class SubscriberImpl implements Subscriber {
+public class SubscriberImpl implements Subscriber, MessageHandler {
 
         private JTextArea messages_TextArea;
         private JTextArea my_subscriptions_TextArea;
         private Map<String,Subscriber> my_subscriptions;
 
         public SubscriberImpl(){
+            
         }
         
         public SubscriberImpl(ClientSwing clientSwing) {
                 this.messages_TextArea = clientSwing.messages_TextArea;
                 this.my_subscriptions_TextArea = clientSwing.my_subscriptions_TextArea;
                 this.my_subscriptions = clientSwing.my_subscriptions;
+                //WebSocketClientFinal.getInstance().addMessageHandler(this);
         }
 
         public void onClose(String topic, String cause) {
@@ -43,5 +49,14 @@ public class SubscriberImpl implements Subscriber {
 
         public void onEvent(String topic, String event) {
                 messages_TextArea.append(topic+": "+event+"\n");
+//                WebSocketClientFinal.sendMessage(event);
         }
+
+    @Override
+    public void handleMessage(String message) {
+        //onEvent(message, message);
+        System.out.print("SubscriberImpl -> handleMessage -> "+message);
+    }
+        
+        
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.*;
 import util.MyEvent;
+import webSocketService.WebSocketClientFinal;
 
 public class apiREST_Publisher {
   public static void publish(MyEvent myEvent) {
@@ -31,6 +32,9 @@ public class apiREST_Publisher {
         System.out.println(line);
       }
 
+      //TODO
+      //WebSocketClientFinal.sendMessage(line);
+      
     } catch (Exception e) {
       e.printStackTrace();
     }

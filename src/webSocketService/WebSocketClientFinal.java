@@ -17,35 +17,49 @@ import util.MyEvent;
 import util.MySubscription;
 
 @ClientEndpoint
-public class WebSocketClient {
+public class WebSocketClientFinal implements MessageHandler{
 
   static Map<String, Subscriber> subscriberMap;
   static Session session;
 
-  public static void newInstance() {
+  
+  private static WebSocketClientFinal mInstance;
+  
+  public static WebSocketClientFinal getInstance() {
+      if (mInstance==null){
+          mInstance = new WebSocketClientFinal();
+      }
+      return mInstance;
+  }
+
+  private WebSocketClientFinal(){
     subscriberMap = new HashMap<String, Subscriber>();
     try {
       WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-      session = container.connectToServer(WebSocketClient.class,
+      session = container.connectToServer(WebSocketClientFinal.class,
         URI.create(Cons.SERVER_WEBSOCKET));
       
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-
+  
   //only one subscriber per topic allowed:
   public static synchronized void addSubscriber(String topic_name, Subscriber subscriber) {
       //TODO CHECK
-    if (subscriber!=null)
+    if (subscriber!=null){
         subscriberMap.put(topic_name, subscriber);
+        //MyEvent event = new MyEvent(topic_name, topic_name)
+    }
     
   }
 
   public static synchronized void removeSubscriber(String topic_name) {
       //TODO CHECK
-    if(subscriberMap!=null && subscriberMap.containsKey(topic_name))
+    if(subscriberMap!=null && subscriberMap.containsKey(topic_name)){
             subscriberMap.remove(topic_name);
+            
+    }
   }
 
   public static void close() {

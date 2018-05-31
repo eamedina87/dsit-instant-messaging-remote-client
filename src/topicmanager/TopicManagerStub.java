@@ -2,12 +2,16 @@ package topicmanager;
 
 import apiREST.apiREST_Publisher;
 import apiREST.apiREST_TopicManager;
+import com.google.gson.Gson;
 import java.util.Iterator;
 import java.util.Set;
 import publisher.Publisher;
 import publisher.PublisherStub;
 import subscriber.Subscriber;
+import util.MyEvent;
+import util.MySubscription;
 import webSocketService.WebSocketClient;
+import webSocketService.WebSocketClientFinal;
 
 public class TopicManagerStub implements TopicManager {
 
@@ -19,12 +23,14 @@ public class TopicManagerStub implements TopicManager {
     
     
   public TopicManagerStub(String user) {
-    WebSocketClient.newInstance();
+    //WebSocketClient.newInstance();
+    WebSocketClientFinal.getInstance();
     this.user = user;
   }
 
   public void close() {
-    WebSocketClient.close();
+    //WebSocketClient.close();
+    WebSocketClientFinal.close();
   }
 
   public Publisher addPublisherToTopic(String topic) {
@@ -54,7 +60,14 @@ public class TopicManagerStub implements TopicManager {
       //TODO CHECK
     if (!isTopic(topic))
         return false;
-    WebSocketClient.addSubscriber(topic, subscriber);  
+    //WebSocketClient.addSubscriber(topic, subscriber);  
+    MySubscription subs = new MySubscription();
+    subs.topic = topic;
+    subs.type = true;
+    Gson gson = new Gson();
+    String message = gson.toJson(subs);
+    WebSocketClientFinal.sendMessage(message);
+    WebSocketClientFinal.addSubscriber(topic, subscriber);  
     return true;
   }
 
@@ -62,7 +75,13 @@ public class TopicManagerStub implements TopicManager {
       //TODO CHECK
     if (!isTopic(topic))
         return false;      
-    WebSocketClient.addSubscriber(topic, subscriber);
+    MySubscription subs = new MySubscription();
+    subs.topic = topic;
+    subs.type = false;
+    Gson gson = new Gson();
+    String message = gson.toJson(subs);
+    WebSocketClientFinal.sendMessage(message);
+    WebSocketClientFinal.removeSubscriber(topic);
     return true;
   }
 

@@ -11,6 +11,7 @@ import publisher.Publisher;
 import subscriber.Subscriber;
 import topicmanager.TopicManager;
 import topicmanager.TopicManagerStub;
+import webSocketService.WebSocketClient;
 
 public class ClientSwing {
 
@@ -121,7 +122,6 @@ public class ClientSwing {
             }
             topic_list_TextArea.setText(sb.toString());
             
-            
         }
     }
     class newPublisherHandler implements ActionListener{
@@ -135,15 +135,16 @@ public class ClientSwing {
                     my_subscriptions.remove(publisherTopic);
                 }
                 publisherTopic = argument_TextField.getText();
-                if (subscriber==null){
-                    subscriber = new SubscriberImpl(ClientSwing.this);
-                }
+                //if (subscriber==null){
+                //    subscriber = new SubscriberImpl(ClientSwing.this);
+                //}
                 publisher = topicManager.addPublisherToTopic(publisherTopic);
-                topicManager.subscribe(publisherTopic, subscriber);
-                my_subscriptions.put(publisherTopic, subscriber);   
+                //topicManager.subscribe(publisherTopic, subscriber);
+                //my_subscriptions.put(publisherTopic, subscriber);   
                 publisher_TextArea.setText(publisherTopic);
                 argument_TextField.setText("");
-                displaySubscriptions();
+                //TODO update publisher list
+                
                 
             }
             new showTopicsHandler().actionPerformed(e);
@@ -198,6 +199,11 @@ public class ClientSwing {
             if (publisher!=null){
                 String event = argument_TextField.getText();
                 publisher.publish(publisherTopic, event);
+                //if (subscriber==null){
+                //    subscriber = new SubscriberImpl(ClientSwing.this);
+                //}
+                //subscriber.onEvent(publisherTopic,event);
+              
                 argument_TextField.setText("");
             }
             

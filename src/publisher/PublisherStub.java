@@ -3,6 +3,7 @@ package publisher;
 import apiREST.apiREST_Publisher;
 
 import util.MyEvent;
+import webSocketService.WebSocketClient;
 
 public class PublisherStub implements Publisher {
 
@@ -18,7 +19,10 @@ public class PublisherStub implements Publisher {
 
   public void publish(String topic, String event) {
       //DONE
-    apiREST_Publisher.publish(new MyEvent(topic, event));
+      MyEvent mEvent = new MyEvent(topic, event);
+    apiREST_Publisher.publish(mEvent);
+    
+      
   }
 
 }
