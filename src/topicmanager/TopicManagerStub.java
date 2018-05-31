@@ -29,12 +29,10 @@ public class TopicManagerStub implements TopicManager {
   }
 
   public void close() {
-    //WebSocketClient.close();
     WebSocketClientFinal.close();
   }
 
   public Publisher addPublisherToTopic(String topic) {
-      //TODO CHECK UR
     PublisherStub publisher = new PublisherStub(topic);
     apiREST_TopicManager.addPublisherToTopic(topic);
     return publisher;
@@ -42,17 +40,14 @@ public class TopicManagerStub implements TopicManager {
   }
 
   public int removePublisherFromTopic(String topic) {
-      //TODO CHECK
     return apiREST_TopicManager.removePublisherFromTopic(topic);
   }
 
   public boolean isTopic(String topic_name) {
-      //TODO CHECK
     return apiREST_TopicManager.isTopic(topic_name);
   }
 
   public Set<String> topics() {
-      //TODO CHECK
     return apiREST_TopicManager.topics();
   }
 
@@ -60,19 +55,16 @@ public class TopicManagerStub implements TopicManager {
       //TODO CHECK
     if (!isTopic(topic))
         return false;
-    //WebSocketClient.addSubscriber(topic, subscriber);  
     MySubscription subs = new MySubscription();
     subs.topic = topic;
     subs.type = true;
     Gson gson = new Gson();
     String message = gson.toJson(subs);
     WebSocketClientFinal.sendMessage(message);
-    WebSocketClientFinal.addSubscriber(topic, subscriber);  
     return true;
   }
 
   public boolean unsubscribe(String topic, Subscriber subscriber) {
-      //TODO CHECK
     if (!isTopic(topic))
         return false;      
     MySubscription subs = new MySubscription();
@@ -81,7 +73,6 @@ public class TopicManagerStub implements TopicManager {
     Gson gson = new Gson();
     String message = gson.toJson(subs);
     WebSocketClientFinal.sendMessage(message);
-    WebSocketClientFinal.removeSubscriber(topic);
     return true;
   }
 

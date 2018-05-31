@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
 import javax.websocket.MessageHandler;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
@@ -25,6 +26,8 @@ public class WebSocketClientFinal implements MessageHandler{
   
   private static WebSocketClientFinal mInstance;
   
+ 
+  
   public static WebSocketClientFinal getInstance() {
       if (mInstance==null){
           mInstance = new WebSocketClientFinal();
@@ -32,16 +35,18 @@ public class WebSocketClientFinal implements MessageHandler{
       return mInstance;
   }
 
-  private WebSocketClientFinal(){
-    subscriberMap = new HashMap<String, Subscriber>();
-    try {
-      WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-      session = container.connectToServer(WebSocketClientFinal.class,
-        URI.create(Cons.SERVER_WEBSOCKET));
-      
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  public WebSocketClientFinal(){
+      if (mInstance==null){
+        subscriberMap = new HashMap<String, Subscriber>();
+        try {
+          WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+          session = container.connectToServer(WebSocketClientFinal.class,
+            URI.create(Cons.SERVER_WEBSOCKET));
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
   }
   
   //only one subscriber per topic allowed:
@@ -49,13 +54,11 @@ public class WebSocketClientFinal implements MessageHandler{
       //TODO CHECK
     if (subscriber!=null){
         subscriberMap.put(topic_name, subscriber);
-        //MyEvent event = new MyEvent(topic_name, topic_name)
     }
     
   }
 
   public static synchronized void removeSubscriber(String topic_name) {
-      //TODO CHECK
     if(subscriberMap!=null && subscriberMap.containsKey(topic_name)){
             subscriberMap.remove(topic_name);
             
@@ -82,13 +85,19 @@ public class WebSocketClientFinal implements MessageHandler{
     //message to warn closing a topic:
     if (topic.equals("CLOSED")) {
       //TODO CHECK
-      subscriberMap.get(topic).onClose(topic, message);
+      subscriberMap.get(topic).onClose(topic, myEvent.content);
     } 
     //ordinary message from topic:
     else {
       //TODO CHECK
-      subscriberMap.get(topic).onEvent(topic, message);
+      subscriberMap.get(topic).onEvent(topic, myEvent.content);
     }
+  }
+  
+  
+  @OnError
+  public void onError(Throwable error) {
+      System.out.print(error.getMessage()); 
   }
   
   public void addMessageHandler(MessageHandler msgHandler) {

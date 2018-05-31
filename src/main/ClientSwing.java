@@ -12,6 +12,7 @@ import subscriber.Subscriber;
 import topicmanager.TopicManager;
 import topicmanager.TopicManagerStub;
 import webSocketService.WebSocketClient;
+import webSocketService.WebSocketClientFinal;
 
 public class ClientSwing {
 
@@ -114,7 +115,6 @@ public class ClientSwing {
 
     class showTopicsHandler implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            //DONE
             Set<String> topics = topicManager.topics();
             StringBuilder sb = new StringBuilder();
             for (String topic:topics){
@@ -135,16 +135,9 @@ public class ClientSwing {
                     my_subscriptions.remove(publisherTopic);
                 }
                 publisherTopic = argument_TextField.getText();
-                //if (subscriber==null){
-                //    subscriber = new SubscriberImpl(ClientSwing.this);
-                //}
                 publisher = topicManager.addPublisherToTopic(publisherTopic);
-                //topicManager.subscribe(publisherTopic, subscriber);
-                //my_subscriptions.put(publisherTopic, subscriber);   
                 publisher_TextArea.setText(publisherTopic);
                 argument_TextField.setText("");
-                //TODO update publisher list
-                
                 
             }
             new showTopicsHandler().actionPerformed(e);
@@ -199,11 +192,6 @@ public class ClientSwing {
             if (publisher!=null){
                 String event = argument_TextField.getText();
                 publisher.publish(publisherTopic, event);
-                //if (subscriber==null){
-                //    subscriber = new SubscriberImpl(ClientSwing.this);
-                //}
-                //subscriber.onEvent(publisherTopic,event);
-              
                 argument_TextField.setText("");
             }
             
@@ -213,6 +201,7 @@ public class ClientSwing {
     }
     class CloseAppHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            WebSocketClientFinal.close();
             System.exit(0);
         }
     }
@@ -224,7 +213,7 @@ public class ClientSwing {
         public void windowClosed(WindowEvent e) {}
         public void windowOpened(WindowEvent e) {}
         public void windowClosing(WindowEvent e) {
-            //...
+            WebSocketClientFinal.close();
             System.out.println("app closed");
             System.exit(0);
         }
