@@ -19,5 +19,4 @@ public interface Cons {
   String SERVER_REST = "http://localhost:8080/dsit-instant-messaging-remote-server/webresources";
   String SERVER_WEBSOCKET = "ws://localhost:8080/dsit-instant-messaging-remote-server/ws";
   
-    
 }

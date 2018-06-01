@@ -61,6 +61,7 @@ public class TopicManagerStub implements TopicManager {
     Gson gson = new Gson();
     String message = gson.toJson(subs);
     WebSocketClientFinal.sendMessage(message);
+    WebSocketClientFinal.addSubscriber(topic, subscriber);
     return true;
   }
 
@@ -73,6 +74,7 @@ public class TopicManagerStub implements TopicManager {
     Gson gson = new Gson();
     String message = gson.toJson(subs);
     WebSocketClientFinal.sendMessage(message);
+    WebSocketClientFinal.removeSubscriber(topic);
     return true;
   }
 
